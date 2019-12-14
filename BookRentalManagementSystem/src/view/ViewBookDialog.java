@@ -12,6 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableCellEditor;
 
 import controller.manager.BookManager;
 
@@ -28,21 +29,25 @@ public class ViewBookDialog extends JDialog implements ActionListener {
 		
 		JPanel pnlCenter = new JPanel();
 		JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+		 
 		
 		pnlCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 		pnlSouth.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
 		String[] headerNames = {"ISBN","Title","Author"};
 		JTable jtable;
 		
-		try {
+		try 
+		{
 			jtable = new JTable(BookManager.getBooks(),headerNames);
 			jtable.setRowHeight(25);
+			//jtable.getColumn("ISBN");
 			JScrollPane scrollPane = new JScrollPane(jtable);
 			jtable.setFillsViewportHeight(true);
 			pnlCenter.add(scrollPane);
 			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (ClassNotFoundException | SQLException e)
+		{
 			e.printStackTrace();
 		}
 		
