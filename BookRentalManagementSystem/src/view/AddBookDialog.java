@@ -29,9 +29,9 @@ public class AddBookDialog extends JDialog implements ActionListener
 
 	private static final long serialVersionUID = 1L;
 	
-	private JTextField txtISBN = new JTextField();
-	private JTextField txtTitle = new JTextField();
-	private JTextField txtAuthor = new JTextField();
+	private JTextField txtISBN = new JTextField(20);
+	private JTextField txtTitle = new JTextField(20);
+	private JTextField txtAuthor = new JTextField(20);
 	private JButton btnSubmit = new JButton("Submit");
 	private JButton btnReset = new JButton("Reset");
 	
@@ -41,7 +41,7 @@ public class AddBookDialog extends JDialog implements ActionListener
 		super(dialog,"Add Book",true);
 		
 		JPanel pnlCenter = new JPanel(new GridLayout(3,2,10,10));
-		JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+		JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.CENTER,10,0));
 		
 		pnlCenter.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 		pnlSouth.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 10));
