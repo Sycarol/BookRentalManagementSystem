@@ -40,16 +40,16 @@ public class ManageBooksDialog extends JDialog implements ActionListener
 		
 		btnAddBook.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnViewBook.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnUpdateBook.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnDeleteBook.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		
 		this.add(btnAddBook);
 		this.add(btnViewBook);
@@ -81,16 +81,11 @@ public class ManageBooksDialog extends JDialog implements ActionListener
 			try 
 			{
 				options = BookManager.getBooksISBN();
-				Object selectedValues = JOptionPane.showInputDialog(this, "Select book: ", "Update Books: Select book ISBN", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-				if(selectedValues=="UNINITIALIZED_VALUE" || selectedValues==null)
-				{
-					dispose();
-				}
-				else
+				Object selectedValues = JOptionPane.showInputDialog(this, "Select book ISBN: ", "Update Book", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if(selectedValues!=null)
 				{
 					new UpdateBookDialog(this,selectedValues.toString());
-				}
-				
+				}	
 			} 
 			catch (ClassNotFoundException | SQLException e) 
 			{
@@ -99,7 +94,21 @@ public class ManageBooksDialog extends JDialog implements ActionListener
 		}
 		else if(source==btnDeleteBook)
 		{
-			new DeleteBookDialog(this);
+			Object[] options;
+			try 
+			{
+				options = BookManager.getBooksISBN();
+				Object selectedValues = JOptionPane.showInputDialog(this, "Select book ISBN: ", "Delete Book", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if(selectedValues!=null)
+				{
+					new DeleteBookDialog(this,selectedValues.toString());
+				}
+			} 
+			catch (ClassNotFoundException | SQLException e) 
+			{
+				e.printStackTrace();
+			}		
+			
 		}
 			
 	}

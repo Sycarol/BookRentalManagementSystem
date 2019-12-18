@@ -1,5 +1,4 @@
 package view;
-import java.lang.*;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -19,10 +18,10 @@ import javax.swing.JTextField;
 
 import controller.manager.BookBorrowManager;
 import controller.validator.MaximumLengthException;
+import controller.validator.PatternUnmatchedException;
 import controller.validator.RequiredFieldException;
 import controller.validator.Validator;
 import model.Book;
-import model.Student;
 
 public class ReturnBookDialog extends JDialog implements ActionListener {
 
@@ -30,21 +29,22 @@ public class ReturnBookDialog extends JDialog implements ActionListener {
 	
 	private JButton btnSubmit = new JButton ("Submit");
 	private JButton btnReset = new JButton ("Reset");
-	private JTextField txtISBN = new JTextField();
+	private JTextField txtISBN = new JTextField(20);
 
 	public ReturnBookDialog(ManageRentalsDialog dialog) 
 	{
 		super(dialog,"Return Book",true);
 		
 
-		JPanel pnlCenter = new JPanel(new GridLayout(1,2,10,10));
-		JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
+		JPanel pnlCenter = new JPanel(new GridLayout(3,1,10,10));
+		JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.CENTER,10,0));
 		
 		pnlCenter.setBorder(BorderFactory.createEmptyBorder(10, 10,10, 10));
-		pnlSouth.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		pnlSouth.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 		
-		pnlCenter.add(new JLabel("ISBN: ", JLabel.LEFT));
+		pnlCenter.add(new JLabel("ISBN: *", JLabel.LEFT));
 		pnlCenter.add(txtISBN);
+		pnlCenter.add(new JLabel("* Required"));
 		
 		pnlSouth.add(btnSubmit);
 		pnlSouth.add(btnReset);
@@ -78,7 +78,7 @@ public class ReturnBookDialog extends JDialog implements ActionListener {
 			{
 				ISBN=Validator.validate("ISBN", txtISBN.getText(), true, 15);
 			}
-			catch (RequiredFieldException | MaximumLengthException e) 
+			catch (RequiredFieldException | MaximumLengthException | PatternUnmatchedException e) 
 			{
 				exceptions.add(e);
 			}
@@ -88,7 +88,6 @@ public class ReturnBookDialog extends JDialog implements ActionListener {
 			if(size==0)
 			{
 				Book book = new Book();
-				Student student = new Student();
 				book.setISBN(ISBN);
 			
 				try {
@@ -109,10 +108,10 @@ public class ReturnBookDialog extends JDialog implements ActionListener {
 						// Return book in time
 						if(price == 0)
 						{
-							JOptionPane.showMessageDialog(this, "Thank you for return the book in time." , "Success", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(this, "Thank you for returning the book in time." , "Success", JOptionPane.INFORMATION_MESSAGE);
 						}
 						else
-							JOptionPane.showMessageDialog(this, "Unable to add new record.","Unsuccessful",JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(this, "Unable to return book.","Unsuccessful",JOptionPane.WARNING_MESSAGE);
 					}
 				}
 				catch (HeadlessException | ClassNotFoundException | SQLException e)

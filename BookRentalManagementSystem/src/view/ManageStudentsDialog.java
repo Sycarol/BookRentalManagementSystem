@@ -40,16 +40,16 @@ public class ManageStudentsDialog extends JDialog implements ActionListener {
 		
 		btnAddStudent.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnViewStudent.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnUpdateStudent.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		btnDeleteStudent.setBorder(BorderFactory.createCompoundBorder(
 	               BorderFactory.createLineBorder(Color.GRAY, 1),
-	               BorderFactory.createLineBorder(Color.WHITE, 40)));
+	               BorderFactory.createLineBorder(Color.WHITE, 50)));
 		
 		this.add(btnAddStudent);
 		this.add(btnViewStudent);
@@ -80,12 +80,9 @@ public class ManageStudentsDialog extends JDialog implements ActionListener {
 			try
 			{
 				Object[] options = StudentManager.getStudentsMatric();
-				Object selectedValues = JOptionPane.showInputDialog(this, "Select student: ", "Update Student: Select student", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-				if(selectedValues=="UNINITIALIZED_VALUE" || selectedValues==null)
-				{
-					dispose();
-				}
-				else
+				
+				Object selectedValues = JOptionPane.showInputDialog(this, "Select student: ", "Update Student", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if( selectedValues != null)
 				{
 					new UpdateStudentDialog(this,selectedValues.toString());
 				}
@@ -97,9 +94,21 @@ public class ManageStudentsDialog extends JDialog implements ActionListener {
 		}	
 		else if(source==btnDeleteStudent)
 		{
-			new DeleteStudentDialog(this);
+			try
+			{
+				Object[] options = StudentManager.getStudentsMatric();
+				
+				Object selectedValues = JOptionPane.showInputDialog(this, "Select student: ", "Delete Student", JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if(selectedValues!=null)
+				{
+					new DeleteStudentDialog(this,selectedValues.toString());
+				}
+			}
+			catch (ClassNotFoundException | SQLException e) 
+			{
+				e.printStackTrace();
+			}
 		}
-		
 	}
 
 }

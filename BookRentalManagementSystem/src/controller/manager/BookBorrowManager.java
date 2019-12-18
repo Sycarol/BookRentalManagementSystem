@@ -9,37 +9,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
-import model.BookBorrow;
-
 public class BookBorrowManager {
-	
-private static Vector<BookBorrow> bookBorrows = new Vector<>();
-	
-	public static int addBookBorrow(BookBorrow bookBorrow) throws SQLException, ClassNotFoundException
-	{
-		long millis=System.currentTimeMillis();  
-		java.sql.Date date = new java.sql.Date(millis);
-		
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root"," ");
-		PreparedStatement ps = connection.prepareStatement("INSERT INTO rental(matricNo, ISBN, dateStart, rentalFees) VALUES (?, ?, ?, ?)");
-				
-		ps.setString(2,  bookBorrow.getMatricNo());
-		ps.setString(3,  bookBorrow.getISBN());
-		//ps.setDate(4, (Date)bookBorrow.getDateStart());
-		
-		// Directly use sql datetime
-		ps.setDate(4, date);
-		
-		ps.setFloat(6, bookBorrow.getRentalFees());
-		
-	
-		int status = ps.executeUpdate();
-		connection.close();
-		return status;
-	}
-	
-	
+
 	public static Object[][] getBookBorrows() throws SQLException, ClassNotFoundException{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root", " ");
@@ -137,7 +108,7 @@ private static Vector<BookBorrow> bookBorrows = new Vector<>();
 			long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
 			    
 			// Get Date Duration
-			//System.out.println(diff);
+			System.out.println(diff);
 			
 			if(diff > 7)
 			{
@@ -153,14 +124,11 @@ private static Vector<BookBorrow> bookBorrows = new Vector<>();
 			status = ps.executeUpdate();
 			
 			
-			//System.out.println("STATUS "+ status);
+			System.out.println("STATUS "+ status);
 			
 			//Class.forName("com.mysql.jdbc.Driver");
 			//Connection connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root", "");
 				
-			//System.out.println(status);
-			//System.out.println(penaltyPrice);
-			
 			// Prepare result to send 
 			result.set(0, (long) 1);
 			result.set(1, penaltyPrice);

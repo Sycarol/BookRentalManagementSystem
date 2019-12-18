@@ -1,5 +1,5 @@
 package controller.manager;
-
+import model.Book;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
-
-import model.Book;
 
 public class BookManager {
 	private static Vector<Book> books = new Vector<>();
@@ -45,7 +43,7 @@ public class BookManager {
 		int rowsNumber=rs2.getInt("rowcount");
 		ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
-
+		
 		// Convert ResultSet to 2D Java Object
 		Object[][] resultSet = new Object[rowsNumber][columnsNumber];
         int row = 0;
@@ -86,8 +84,6 @@ public class BookManager {
 		rs2.next();
 
 		int rowsNumber=rs2.getInt("rowcount");
-		ResultSetMetaData rsmd = (ResultSetMetaData) rs.getMetaData();
-		int columnsNumber = rsmd.getColumnCount();
 
 		// Convert ResultSet to 2D Java Object
 		Object[] resultSet = new Object[rowsNumber];
@@ -102,7 +98,33 @@ public class BookManager {
 		return resultSet;
 	}
 	
-	public int updateBook(Book book) throws SQLException,ClassNotFoundException
+	public static Object[] getAvailableBooksISBN() throws SQLException, ClassNotFoundException{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root", " ");
+
+		PreparedStatement ps = connection.prepareStatement("SELECT ISBN FROM BOOK WHERE ISBN NOT IN (SELECT ISBN FROM RENTAL)");
+		PreparedStatement ps2 = connection.prepareStatement("SELECT COUNT(*) AS rowcount FROM BOOK WHERE ISBN NOT IN (SELECT ISBN FROM RENTAL)");
+
+		ResultSet rs = ps.executeQuery();
+		ResultSet rs2 = ps2.executeQuery();
+		rs2.next();
+
+		int rowsNumber=rs2.getInt("rowcount");
+
+		// Convert ResultSet to 2D Java Object
+		Object[] resultSet = new Object[rowsNumber];
+        int row = 0;
+        while (rs.next())
+        {
+            resultSet[row] = rs.getObject(1);
+            
+            row++;
+        }
+        System.out.println(resultSet);
+		return resultSet;
+	}
+	
+	public static int updateBook(Book book) throws SQLException,ClassNotFoundException
 	{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root", " ");
