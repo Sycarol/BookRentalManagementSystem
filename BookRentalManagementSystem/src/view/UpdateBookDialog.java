@@ -112,8 +112,11 @@ public class UpdateBookDialog extends JDialog implements ActionListener
 				try 
 				{
 					if(BookManager.updateBook(book)!=0)
+					{
 						JOptionPane.showMessageDialog(this, "Book with ISBN: " + book.getISBN() + 
 						" has been successfully updated.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						dispose();
+					}
 					else
 						JOptionPane.showMessageDialog(this, "Unable to update book " + book.getISBN(),"Unsuccessful",JOptionPane.WARNING_MESSAGE);
 				} 
@@ -122,6 +125,7 @@ public class UpdateBookDialog extends JDialog implements ActionListener
 					if(e.getMessage() != null) 
 					{
 						JOptionPane.showMessageDialog(this, "Failed to update book with ISBN: ." + book.getISBN() + ".","Unsuccessful",JOptionPane.WARNING_MESSAGE);
+						e.printStackTrace();
 					}			
 				}
 			}

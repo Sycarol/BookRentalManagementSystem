@@ -128,10 +128,11 @@ public class BookManager {
 	{
 		Class.forName("com.mysql.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/brms", "root", " ");
-		PreparedStatement ps = connection.prepareStatement("UPDATE book SET(Title, Author) VALUES (?, ?) WHERE ISBN = ?");
+		PreparedStatement ps = connection.prepareStatement("UPDATE book SET Title=?, Author=? WHERE ISBN = ?");
 				
-		ps.setString(2, book.getTitle());
-		ps.setString(3, book.getAuthor());
+		ps.setString(1, book.getTitle());
+		ps.setString(2, book.getAuthor());
+		ps.setString(3,book.getISBN());
 	
 		int status = ps.executeUpdate();
 		connection.close();

@@ -55,7 +55,7 @@ public class ViewBookDialog extends JDialog implements ActionListener {
 				private static final long serialVersionUID = 1L;
 
 				public boolean isCellEditable(int row, int column) {
-			        return column == 1 || column == 2;
+			        return false;
 			    }
 			};
 			JTable jTable = new JTable(model);
